@@ -26,7 +26,7 @@ public class NominalController {
     }
 
 
-    @GetMapping("/withdraw")
+    @GetMapping("/withdraw222")
     public WithdrawResponse withdrawMoney(@RequestBody WithdrawRequest withdrawRequest){
         return nominalService.withdrawMoney(withdrawRequest);
     }
@@ -34,7 +34,7 @@ public class NominalController {
 
 
     @GetMapping("/get2")
-    public List<NominalDto> getAvailableNominals2(double amount){
+    public List<NominalDto> getAvailableNominals2(int amount){
         return nominalService.getAvailableNominals2(amount);
     }
 }

@@ -12,6 +12,6 @@ import java.util.List;
 public class WithdrawResponse {
     long account;
     int amount;
-    double rest;
+    int rest;
     List<NominalDto> nominals;
 }

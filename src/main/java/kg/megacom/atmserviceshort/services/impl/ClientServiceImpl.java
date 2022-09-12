@@ -4,7 +4,6 @@ import kg.megacom.atmserviceshort.dao.ClientRepo;
 import kg.megacom.atmserviceshort.mappers.AccountMapper;
 import kg.megacom.atmserviceshort.mappers.ClientMapper;
 import kg.megacom.atmserviceshort.models.Account;
-import kg.megacom.atmserviceshort.models.Balance;
 import kg.megacom.atmserviceshort.models.Client;
 import kg.megacom.atmserviceshort.models.dto.AccountDto;
 import kg.megacom.atmserviceshort.models.dto.ClientDto;
@@ -15,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ClientServiceImpl implements ClientService {

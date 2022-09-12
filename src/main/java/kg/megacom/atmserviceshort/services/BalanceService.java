@@ -5,4 +5,5 @@ import kg.megacom.atmserviceshort.models.dto.BalanceDto;
 
 public interface BalanceService {
     BalanceDto save(BalanceDto balanceDto);
+    Balance save(Balance balance);
 }

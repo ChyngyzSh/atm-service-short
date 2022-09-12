@@ -14,13 +14,10 @@ import kg.megacom.atmserviceshort.models.dto.response.WithdrawResponse;
 import kg.megacom.atmserviceshort.services.AccountService;
 import kg.megacom.atmserviceshort.services.BalanceService;
 import kg.megacom.atmserviceshort.services.NominalService;
-import org.hibernate.mapping.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Array;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -54,7 +51,7 @@ public class NominalServiceImpl implements NominalService {
         Account account = accountService.getFromRequest(withdrawRequest);
         Balance balance = account.getBalance();
         List<NominalDto> nominalDtoList = getAvailableNominals2(withdrawRequest.getAmount());
-        double rest = balance.getBalance() - withdrawRequest.getAmount();
+        int rest = balance.getBalance() - withdrawRequest.getAmount();
         if (rest >= 0) {
             balance.setId(balance.getId());
             balance.setBalance(rest);
@@ -72,8 +69,10 @@ public class NominalServiceImpl implements NominalService {
         return null;
     }
 
+
+
     @Override
-    public List<NominalDto> getAvailableNominals2(double amount) {
+    public List<NominalDto> getAvailableNominals2(int amount) {
         List<Nominal> nominals = nominalRepo
                 .findByNominalsAndAmount(amount);
         List<Nominal> newNominals = new ArrayList<>();
@@ -98,55 +97,44 @@ public class NominalServiceImpl implements NominalService {
         }
 
         List<NominalDto> nominalDtos = nominalMapper.toDtos(newNominals);
-        saveAfterWithdraw(nominalDtos);
+        refreshNominalCount(nominalDtos);
         System.out.println("nominalDtos : " + nominalDtos);
         return nominalDtos;
     }
 
-    public void saveAfterWithdraw(List<NominalDto> nominalDtos) {
-        List<Nominal> allNominals = nominalRepo.findAll();
-        System.out.println("allNominals " + allNominals);
-        List<Nominal> withdrawNominals = nominalMapper.toEntities(nominalDtos);
-
-        for (int i=0; i<allNominals.size(); i++){
-            for(int j=0; j<withdrawNominals.toArray().length; j++){
-                if(allNominals.get(i).getNominal() == withdrawNominals.get(j).getNominal()){
-                    Nominal nominal = new Nominal();
-                    nominal.setId(allNominals.get(i).getId());
-                    nominal.setNominal(allNominals.get(i).getNominal());
-                    nominal.setAmount(allNominals.get(i).getAmount() - withdrawNominals.get(j).getAmount());
-                    //allNominals.remove(allNominals.get(i));
-                    allNominals.add(nominal);
-                }
-            }
-        }
-        nominalRepo.saveAll(allNominals);
-//        for (Nominal nominal : witdrawNominals) {
-//            for (int i = 0; i <= allNominals.size() - 1; i++) {
-//                if(nominal.getNominal() == allNominals.get(i).getNominal()){
-//                    Nominal allNom = new Nominal();
-//                    allNom.setId(allNominals.get(i).getId());
-//                    allNom.setAmount(allNominals.get(i).getAmount()-nominal.getAmount());
-//                    allNom.setNominal(allNominals.get(i).getNominal());
-//                    allNominals.add(allNom);
-//                    //nominalRepo.save(allNom);
-//                }
-//            }
-//        }
-
-//        for (Nominal nominal : allNominals) {
-//            for (int i = 0; i <= witdrawNominals.size() - 1; i++) {
-//                if (nominal.getNominal() == witdrawNominals.get(i).getNominal()) {
-//                    nominal.setAmount(nominal.getAmount() - witdrawNominals.get(i).getAmount());
-//                    System.out.println(nominal);
-//                    nominalRepo.save(nominal);
-//                }
-//            }
-//        }
+    @Override
+    public List<NominalDto> findAllActiveNominals(int maxNominal) {
+        List<Nominal> nominals = nominalRepo.findByNominalsAndAmount(maxNominal);
+        return nominalMapper.toDtos(nominals);
     }
 
-
-
+    @Override
+    public void refreshNominalCount(List<NominalDto> nominalDtos) {
+        for (NominalDto nominalDto:nominalDtos) {
+            Nominal nominal = nominalRepo.findByNominal(nominalDto.getNominal());
+            nominal.setAmount(nominal.getAmount() - nominalDto.getAmount());
+            nominalRepo.save(nominal);
+        }
+    }
+//    public void saveAfterWithdraw(List<NominalDto> nominalDtos) {
+//        List<Nominal> allNominals = nominalRepo.findAll();
+//        System.out.println("allNominals " + allNominals);
+//        List<Nominal> withdrawNominals = nominalMapper.toEntities(nominalDtos);
+//
+//        for (int i = 0; i < allNominals.size(); i++) {
+//            for (int j = 0; j < withdrawNominals.toArray().length; j++) {
+//                if (allNominals.get(i).getNominal() == withdrawNominals.get(j).getNominal()) {
+//                    Nominal nominal = new Nominal();
+//                    nominal.setId(allNominals.get(i).getId());
+//                    nominal.setNominal(allNominals.get(i).getNominal());
+//                    nominal.setAmount(allNominals.get(i).getAmount() - withdrawNominals.get(j).getAmount());
+//                    //allNominals.remove(allNominals.get(i));
+//                    allNominals.add(nominal);
+//                }
+//            }
+//        }
+//        nominalRepo.saveAll(allNominals);
+//    }
 }
 
 /*

@@ -3,11 +3,10 @@ package kg.megacom.atmserviceshort.controllers;
 import kg.megacom.atmserviceshort.models.Account;
 import kg.megacom.atmserviceshort.models.Client;
 import kg.megacom.atmserviceshort.models.dto.AccountDto;
+import kg.megacom.atmserviceshort.models.dto.response.WithdrawResponse;
 import kg.megacom.atmserviceshort.services.AccountService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.aspectj.weaver.tools.ISupportsMessageContext;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/account")
@@ -24,9 +23,9 @@ public class AccountController {
         return accountService.save(accountDto);
     }
 
-
-    @PostMapping("/withdrawal")
-    public AccountDto witdraw(@RequestBody AccountDto accountDto){
-        return accountService.save(accountDto);
+    @GetMapping("/withdraw")
+    public WithdrawResponse withdraw(@RequestParam long account, @RequestParam int sum){
+        return accountService.withdraw(account, sum);
     }
+
 }

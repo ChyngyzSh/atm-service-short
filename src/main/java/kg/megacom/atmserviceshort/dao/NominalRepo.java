@@ -15,6 +15,7 @@ public interface NominalRepo extends JpaRepository<Nominal, Long> {
     List<Nominal>getAllNominals();
 
     @Query("select u from Nominal u where ?1 >= u.nominal and u.amount>0 order by u.nominal desc ")
-    List<Nominal> findByNominalsAndAmount(double amount);
+    List<Nominal> findByNominalsAndAmount(int amount);
 
+    Nominal findByNominal(int nominal);
 }

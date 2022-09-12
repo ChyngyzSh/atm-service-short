@@ -25,4 +25,9 @@ public class BalanceServiceImpl implements BalanceService {
         balance=balanceRepo.save(balance);
         return balanceMapper.toDto(balance);
     }
+
+    @Override
+    public Balance save(Balance balance) {
+        return balanceRepo.save(balance);
+    }
 }

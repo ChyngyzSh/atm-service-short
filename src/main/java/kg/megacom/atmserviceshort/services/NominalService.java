@@ -12,8 +12,10 @@ public interface NominalService {
 
     WithdrawResponse withdrawMoney(WithdrawRequest withdrawRequest);
 
-    List<NominalDto> getAvailableNominals2(double amount);
+    List<NominalDto> getAvailableNominals2(int amount);
 
+    List<NominalDto> findAllActiveNominals(int maxNominal);
+    void refreshNominalCount(List<NominalDto> nominalDtos);
 }
 /*
 List<NominalDto> getNominals(double amount);

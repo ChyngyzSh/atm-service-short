@@ -13,5 +13,5 @@ import javax.persistence.*;
 public class BalanceDto {
     @JsonIgnore
     Long id;
-    double balance;
+    int balance;
 }
