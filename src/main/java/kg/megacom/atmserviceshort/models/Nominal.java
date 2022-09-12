@@ -18,6 +18,6 @@ public class Nominal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    int nominal;
-    long amount;
+    double nominal;
+    double amount;
 }

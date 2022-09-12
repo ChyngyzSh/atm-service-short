@@ -9,4 +9,6 @@ import org.mapstruct.factory.Mappers;
 @Mapper
 public interface NominalMapper extends CrudMapper<Nominal, NominalDto> {
     NominalMapper INSTANCE = Mappers.getMapper(NominalMapper.class);
+
+
 }

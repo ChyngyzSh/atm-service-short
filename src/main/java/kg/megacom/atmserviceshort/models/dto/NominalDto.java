@@ -13,6 +13,6 @@ import javax.persistence.*;
 public class NominalDto {
     @JsonIgnore
     Long id;
-    int nominal;
-    int amount;
+    double nominal;
+    double amount;
 }

@@ -12,6 +12,11 @@ public interface NominalService {
 
     WithdrawResponse withdrawMoney(WithdrawRequest withdrawRequest);
 
-    List<NominalDto> getNominals(double amount);
-    List<NominalDto> getNominals2(double amount);
+    List<NominalDto> getAvailableNominals2(double amount);
+
 }
+/*
+List<NominalDto> getNominals(double amount);
+    List<NominalDto> getNominals2(double amount);
+    List<NominalDto> getAvailableNominals(double amount);
+ */
